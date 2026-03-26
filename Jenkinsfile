@@ -16,7 +16,7 @@ pipeline {
       }
 
   stage('Build') {
-    tool name: 'maven-3.9.14', type: 'maven'
+    tools {maven 'maven-3.9.14'}
      steps {
       sh 'mvn clean package -DskipTests'
     }
