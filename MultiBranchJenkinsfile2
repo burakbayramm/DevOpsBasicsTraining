@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '1', daysToKeepStr: '', numToKeepStr: '3')
+    }
+    stages {
+      stage('Checkout') {
+        steps {
+          cleanWs()
+          checkout scm
+          sh 'ls -ltr'
+
+        }
+      }
+
+  stage('Build') {
+    tools {
+      maven 'maven-3.6.3'
+    }
+     steps {
+      sh 'echo "Build command: mvcn clean install"'
+    }
+  }
+  stage("Archive Artifacts"){
+            steps{
+                archiveArtifacts artifacts: "MultiBranchJenkinsfile2", followSymlinks: false
+            }
+        }
+
+}
