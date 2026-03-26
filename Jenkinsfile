@@ -2,6 +2,7 @@ pipeline {
     agent any
     parameters {
       string defaultValue: 'march26', description: 'Branch Name', name: 'checkout_branch'
+      choice choices: ['Yes', 'No'], name: 'archiveArtifacts'
     }
     options {
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '1', daysToKeepStr: '', numToKeepStr: '3')
@@ -16,11 +17,21 @@ pipeline {
       }
 
   stage('Build') {
-    tools {maven 'maven-3.6.3'}
+    tools {
+      maven 'maven-3.6.3'
+    }
      steps {
-      sh 'mvn clean package -DskipTests'
+      sh 'echo "Build command: mvcn clean install"'
     }
   }
+  stage("Archive Artifacts"){
+            when {
+                environment name: 'archiveArtifacts', value: 'Yes'
+            }
+            steps{
+                archiveArtifacts artifacts: "helloWorld-${BUILD_NUMBER}.jar", followSymlinks: false
+            }
+        }
 
 }
 }
