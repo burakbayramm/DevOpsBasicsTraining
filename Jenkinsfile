@@ -7,7 +7,8 @@ pipeline {
       stage('Checkout') {
         steps {
           cleanWs()
-          sh 'echo "my first stage"'
+          checkout scmGit(branches: [[name: 'march26']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/burakbayramm/DevOpsBasicsTraining.git']])
+          sh 'ls -ltr'
         }
       }
 
