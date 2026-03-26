@@ -21,6 +21,11 @@ pipeline {
       sh 'echo "Build command: mvcn clean install"'
     }
   }
+  stage('Run Tests') {
+     steps {
+      sh 'echo "Release Tests are running..."'
+    }
+  }
   stage("Archive Artifacts"){
             steps{
                 archiveArtifacts artifacts: "MultiBranchJenkinsfile2", followSymlinks: false
