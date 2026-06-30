@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '', numToKeepStr: '3')
+    }
+    stages {
+        stage('SourceCode Checkout') {
+            steps {
+                cleanWs()
+                sh """
+                echo "Source Code Downloading!"
+                sleep 6
+                """
+            }
+      }
+    
+        stage('Build Dependencies') {
+            tools {
+                gradle 'gradle9.1'
+            }
+            steps {
+            sh """
+            echo "Project is building"
+            gradle --version
+            sleep 4
+            """
+            
+            }
+        }
+  
+        stage('Build') {
+            tools {
+                gradle 'gradle9.6'
+            }
+            steps {
+            sh """
+            echo "Project is building"
+            gradle --version
+            sleep 6
+            touch devopsBasics.jar
+            mv devopsBasics.jar DevOpsBasics-${BUILD_NUMBER}.jar
+            """
+            
+            }
+        }
+        stage ('Archive Artifacts'){
+            steps{
+                archiveArtifacts artifacts: '*.jar', followSymlinks: false
+            }
+        }
+
+        }
+
+}
