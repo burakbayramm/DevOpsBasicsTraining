@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'ssh-slave'
+    }
     options {
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '', numToKeepStr: '3')
     }
