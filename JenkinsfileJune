@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'ssh-slave'
+    }
     options {
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '', numToKeepStr: '3')
     }
@@ -27,6 +29,7 @@ pipeline {
             sh """
             mvn clean install
             cp target/demo-0.0.1-SNAPSHOT.jar DevOpsBasics-${BUILD_NUMBER}.jar
+            sleep 20
             """
             
             }
