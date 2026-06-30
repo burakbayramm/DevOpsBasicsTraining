@@ -27,11 +27,13 @@ pipeline {
             }
         }
         stage ('Archive Artifacts'){
-            when {
-                environment name: 'archiveArtifacts', value: 'Yes'
-            }
             steps{
                 archiveArtifacts artifacts: '*.jar', followSymlinks: false
+            }
+        }
+         stage ('Stage Difference'){
+            steps{
+                sh " echo 'This is the difference between june26/feature1 and june26/feature2'"
             }
         }
 
