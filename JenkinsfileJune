@@ -5,6 +5,7 @@ pipeline {
     }
     parameters {
         string defaultValue: 'june26/feature1', description: 'Source Code Branch', name: 'checkout_branch'
+        choice choices: ['Yes', 'No'], name: 'archiveArtifacts'
         }
 
     stages {
@@ -13,8 +14,7 @@ pipeline {
                 cleanWs()
                 checkout scmGit(branches: [[name: params.checkout_branch]], extensions: [], userRemoteConfigs: [[url: 'https://github.com/burakbayramm/DevOpsBasicsTraining']])
                 sh """
-                echo "Source Code Downloading!"
-                sleep 6
+                ls -ltr
                 """
             }
       }
@@ -32,6 +32,9 @@ pipeline {
             }
         }
         stage ('Archive Artifacts'){
+            when {
+                environment name: 'archiveArtifacts', value: 'Yes'
+            }
             steps{
                 archiveArtifacts artifacts: '*.jar', followSymlinks: false
             }
