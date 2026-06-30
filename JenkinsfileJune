@@ -3,10 +3,15 @@ pipeline {
     options {
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '', numToKeepStr: '3')
     }
+    parameters {
+        string defaultValue: 'june26/feature1', description: 'Source Code Branch', name: 'checkout_branch'
+        }
+
     stages {
         stage('SourceCode Checkout') {
             steps {
                 cleanWs()
+                checkout scmGit(branches: [[name: params.checkout_branch]], extensions: [], userRemoteConfigs: [[url: 'https://github.com/burakbayramm/DevOpsBasicsTraining']])
                 sh """
                 echo "Source Code Downloading!"
                 sleep 6
