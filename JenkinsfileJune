@@ -31,21 +31,6 @@ pipeline {
             
             }
         }
-  
-        stage('Build') {
-            tools {
-                gradle 'gradle9.6'
-            }
-            steps {
-            sh """
-            echo "Project is building"
-            gradle --version
-            sleep 6
-            touch devopsBasics.jar
-            """
-            
-            }
-        }
         stage ('Archive Artifacts'){
             steps{
                 archiveArtifacts artifacts: '*.jar', followSymlinks: false
